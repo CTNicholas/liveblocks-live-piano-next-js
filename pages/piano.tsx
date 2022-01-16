@@ -38,33 +38,30 @@ function PianoDemo () {
     updateMyPresence({ instrument: defaultInstrument, notes: [] })
   }, [])
 
-  // Update current notes being played when another user plays a note
+  // Update current notes being played when other user plays a note
   useEffect(() => {
     if (myPresence.notes && others.count) {
       setActiveNotes([myPresence, ...formatOthers()])
     }
-    console.log('ACTIVE', formatOthers())
   }, [others])
 
   // Update current notes being played when local user plays a note
-  // useEffect(() => {
-  //   if (myPresence.notes) {
-  //     setActiveNotes([myPresence, ...formatOthers()])
-  //   }
-  // }, [myPresence])
+  useEffect(() => {
+    if (myPresence.notes) {
+      setActiveNotes([myPresence, ...formatOthers()])
+    }
+  }, [myPresence])
 
   // When local user plays a note, add note, update presence and active notes
   function handlePlayNote (note: number) {
     const myNotes = [...myPresence.notes, note]
     updateMyPresence({ notes: myNotes })
-    setActiveNotes([{ notes: myNotes, instrument: myPresence.instrument }, ...formatOthers()])
   }
 
   // When local user releases a note, remove note, update presence and active notes
   function handleStopNote (note: number) {
     const myNotes = myPresence.notes.filter(n => n !== note)
     updateMyPresence({ notes: myNotes })
-    setActiveNotes([{ notes: myNotes, instrument: myPresence.instrument }, ...formatOthers()])
   }
 
   // Change my instrument

@@ -47,16 +47,13 @@ export default function LivePiano ({
     setAudioContext(new window.AudioContext())
   }, [])
 
-  if (!audioContext || !activeNotes.length) {
+  if (!audioContext || !Object.keys(activeNotes).length) {
     return <div>Loading...</div>
   }
 
   return (
     <div className="relative">
       <div className="pointer-events-none absolute inset-0 opacity-0">
-
-
-
         {activeNotes.map(({ notes, instrument = defaultInstrument, id }) => (
           <SoundfontProvider
             key={id || 0}
@@ -79,7 +76,6 @@ export default function LivePiano ({
           />
         )
         )}
-
       </div>
       <div className="">
         <Piano
