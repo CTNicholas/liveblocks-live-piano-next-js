@@ -1,5 +1,5 @@
 import { RoomProvider, useMyPresence, useOthers } from '@liveblocks/react'
-import LivePiano from '../components/LivePiano'
+import LivePiano, { instrumentNames } from '../components/LivePiano'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { NotePresence } from '../types'
 
@@ -78,11 +78,12 @@ function PianoDemo () {
         defaultInstrument={defaultInstrument}
         showLetters={true}
       />
-      <select onChange={handleInstrumentChange}>
-        <option value="piano" selected>Piano</option>
-        <option value="marimba">Marimba</option>
-        <option value="guitar">Guitar</option>
-        <option value="trumpet">Trumpet</option>
+      <select onChange={handleInstrumentChange} defaultValue={defaultInstrument}>
+        {instrumentNames.map(instrument => (
+          <option key={instrument} value={instrument}>
+            {instrument.charAt(0).toUpperCase() + instrument.slice(1)}
+          </option>
+        ))}
       </select>
     </main>
   )

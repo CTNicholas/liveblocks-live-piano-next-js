@@ -6,16 +6,26 @@ import { NotePresence } from '../types'
 
 const instruments: { [name: string]: string } = {
   piano: 'acoustic_grand_piano',
+  fiddle: 'fiddle',
+  //piano: 'acoustic_grand_piano',
+  guitar: 'electric_guitar_clean',
+  piccolo: 'piccolo',
+  // electric_guitar: 'distortion_guitar',
+  trumpet: 'muted_trumpet',
+  organ: 'reed_organ',
+  //organ: 'drawbar_organ',
   marimba: 'marimba',
-  guitar: 'acoustic_guitar_nylon',
-  trumpet: 'muted_trumpet'
+  steelpan: 'steel_drums',
+  synth: 'lead_2_sawtooth',
+  choir: 'choir_aahs',
 }
+export const instrumentNames = Object.keys(instruments)
 
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
 const noteRange = {
-  first: MidiNumbers.fromNote('c2'), //c3
-  last: MidiNumbers.fromNote('e4')
+  first: MidiNumbers.fromNote('c3'), //c3
+  last: MidiNumbers.fromNote('b4') // e4
 }
 
 const keyboardShortcuts = KeyboardShortcuts.create({
