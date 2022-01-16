@@ -1,6 +1,7 @@
-import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
+import { RoomProvider, useMyPresence, useOthers } from '@liveblocks/react'
 import LivePiano from '../components/LivePiano'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { NotePresence } from '../types'
 
 export default function Root () {
   return (
@@ -10,61 +11,82 @@ export default function Root () {
   )
 }
 
-type NotePresence = {
-  notes: number[]
-}
+const defaultInstrument = 'piano'
 
 function PianoDemo () {
-  const [activeNotes, setActiveNotes] = useState<number[]>([])
-  const [myNotes, updateMyNotes] = useMyPresence<NotePresence>()
-  const othersNotes = useOthers<NotePresence>()
+  const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
+  const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
+  const others = useOthers<NotePresence>()
 
-  // Flatten all others notes to single array e.g. [45, 48, 49]
-  const flattenOthersNotes = () => {
-    return othersNotes.toArray().reduce((acc: any, { presence }) => {
-      // Do nothing if presence and presence.notes are not set for this remote user
-      if (!presence?.notes) {
-        return acc
-      }
-
-      return [...acc, ...presence.notes]
-    }, [])
+  // Format `others` into NotePresence[] format
+  const formatOthers = () => {
+    return others.toArray()
+      // Skip if presence and presence.notes are not set for this remote user
+      .filter(({ presence }) => presence?.notes)
+      // Return instrument and notes
+      .map(({ presence = {}, connectionId }) => {
+        return {
+          instrument: presence.instrument || defaultInstrument,
+          notes: presence.notes || [],
+          id: connectionId
+        }
+      })
   }
 
-  // Set initial value
+  // Set initial values
   useEffect(() => {
-    updateMyNotes({ notes: [] })
+    updateMyPresence({ instrument: defaultInstrument, notes: [] })
   }, [])
 
   // Update current notes being played when another user plays a note
   useEffect(() => {
-    if (myNotes.notes && othersNotes.count) {
-      setActiveNotes([...flattenOthersNotes(), ...myNotes.notes])
+    if (myPresence.notes && others.count) {
+      setActiveNotes([myPresence, ...formatOthers()])
     }
-  }, [othersNotes])
+    console.log('ACTIVE', formatOthers())
+  }, [others])
+
+  // Update current notes being played when local user plays a note
+  // useEffect(() => {
+  //   if (myPresence.notes) {
+  //     setActiveNotes([myPresence, ...formatOthers()])
+  //   }
+  // }, [myPresence])
 
   // When local user plays a note, add note, update presence and active notes
   function handlePlayNote (note: number) {
-    const mine = [...myNotes.notes, note]
-    updateMyNotes({ notes: mine })
-    setActiveNotes([...flattenOthersNotes(), ...mine])
+    const myNotes = [...myPresence.notes, note]
+    updateMyPresence({ notes: myNotes })
+    setActiveNotes([{ notes: myNotes, instrument: myPresence.instrument }, ...formatOthers()])
   }
 
   // When local user releases a note, remove note, update presence and active notes
   function handleStopNote (note: number) {
-    const mine = myNotes.notes.filter(n => n !== note)
-    updateMyNotes({ notes: mine })
-    setActiveNotes([...flattenOthersNotes(), ...mine])
+    const myNotes = myPresence.notes.filter(n => n !== note)
+    updateMyPresence({ notes: myNotes })
+    setActiveNotes([{ notes: myNotes, instrument: myPresence.instrument }, ...formatOthers()])
+  }
+
+  // Change my instrument
+  function handleInstrumentChange (e: ChangeEvent<HTMLSelectElement>) {
+    updateMyPresence({ instrument: e.target.value })
   }
 
   return (
     <main>
       <LivePiano
+        activeNotes={activeNotes}
         onPlayNote={handlePlayNote}
         onStopNote={handleStopNote}
-        activeNotes={activeNotes}
+        defaultInstrument={defaultInstrument}
         showLetters={true}
       />
+      <select onChange={handleInstrumentChange}>
+        <option value="piano" selected>Piano</option>
+        <option value="marimba">Marimba</option>
+        <option value="guitar">Guitar</option>
+        <option value="trumpet">Trumpet</option>
+      </select>
     </main>
   )
 }
