@@ -14,7 +14,7 @@ const instruments = [
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
 const noteRange = {
-  first: MidiNumbers.fromNote('c3'),
+  first: MidiNumbers.fromNote('c2'), //c3
   last: MidiNumbers.fromNote('e4')
 }
 
