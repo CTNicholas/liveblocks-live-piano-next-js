@@ -33,7 +33,7 @@ type NotePresence = {
 export default function LivePiano () {
   const [audioContext, setAudioContext] = useState<AudioContext>()
   const [myNotes, updateMyNotes] = useMyPresence<NotePresence>()
-  const othersNotes = useOthers<NotePresence[]>()
+  const othersNotes = useOthers<NotePresence>()
   const [activeNotes, setActiveNotes] = useState<number[]>([])
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function LivePiano () {
   useEffect(() => {
     if (myNotes.notes && othersNotes.count) {
       const theirs = othersNotes.toArray()
-        .reduce((acc: [], { presence }) => {
+        .reduce((acc: any, { presence }) => {
           if (!presence?.notes) {
             return acc
           }
