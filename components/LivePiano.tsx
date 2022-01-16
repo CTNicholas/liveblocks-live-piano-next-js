@@ -30,51 +30,24 @@ type NotePresence = {
   notes: number[]
 }
 
-export default function LivePiano () {
+type LivePianoProps = {
+  onPlayNote: (note: number) => void
+  onStopNote: (note: number) => void
+  activeNotes: number[]
+  showLetters: boolean
+}
+
+export default function LivePiano ({
+  onPlayNote = (note: number) => {},
+  onStopNote = (note: number) => {},
+  activeNotes = [],
+  showLetters = false
+}: LivePianoProps) {
   const [audioContext, setAudioContext] = useState<AudioContext>()
-  const [myNotes, updateMyNotes] = useMyPresence<NotePresence>()
-  const othersNotes = useOthers<NotePresence>()
-  const [activeNotes, setActiveNotes] = useState<number[]>([])
 
   useEffect(() => {
     setAudioContext(new window.AudioContext())
-    updateMyNotes({ notes: [] })
-    console.log('NOTES', myNotes)
   }, [])
-
-  useEffect(() => {
-    if (myNotes.notes && othersNotes.count) {
-      const theirs = othersNotes.toArray()
-        .reduce((acc: any, { presence }) => {
-          if (!presence?.notes) {
-            return acc
-          }
-          return [...acc, ...presence.notes]
-        }, [])
-      console.log('NOTES', myNotes)
-      setActiveNotes([...theirs, ...myNotes.notes])
-    }
-  }, [othersNotes])
-
-  function handlePlayNote (note: number) {
-    const mine = [...myNotes.notes, note]
-    //console.log('othersNotes', othersNotes.map(x => x), othersNotes.count)
-    console.log('others', othersNotes.toArray())
-    //const theirs = othersNotes.toArray()
-    //  .reduce((acc: [], other) => [...acc, ...other.presence.notes], [])
-    //console.log('theirs', theirs)
-
-    //console.log('START', mine)
-    updateMyNotes({ notes: mine })
-    setActiveNotes([...mine])//[...othersNotes.notes, ...mine])
-  }
-
-  function handleStopNote (note: number) {
-    const mine = myNotes.notes.filter(n => n !== note)
-    //console.log('STOP', mine)
-    updateMyNotes({ notes: mine })
-    setActiveNotes([...mine])//[...othersNotes, ...mine])
-  }
 
   if (!audioContext) {
     return <div>Loading...</div>
@@ -95,18 +68,19 @@ export default function LivePiano () {
               playNote={playNote}
               stopNote={stopNote}
               disabled={isLoading}
+              keyboardShortcuts={showLetters ? keyboardShortcuts : null}
             />
           )}
         />
       </div>
-      <div className="absolute inset-0 opacity-50">
+      <div className="absolute inset-0 opacity-0">
         <Piano
           noteRange={noteRange}
           width={width}
           playNote={() => {}}
           stopNote={() => {}}
-          onPlayNoteInput={handlePlayNote}
-          onStopNoteInput={handleStopNote}
+          onPlayNoteInput={onPlayNote}
+          onStopNoteInput={onStopNote}
           keyboardShortcuts={keyboardShortcuts}
         />
       </div>
