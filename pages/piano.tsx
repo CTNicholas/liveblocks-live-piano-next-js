@@ -138,7 +138,7 @@ function PianoDemo () {
   )
 }
 
-function SelectInstrument ({ onInstrumentChange }) {
+function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (e: ChangeEvent<HTMLSelectElement>) => void }) {
   return (
     <select onChange={onInstrumentChange} defaultValue={defaultInstrument} className="outline-0 rounded-sm hover:bg-gray-100 focus:ring-2 cursor-pointer mt-0.5 appearance-none w-full">
       {instrumentNames.map(instrument => (
