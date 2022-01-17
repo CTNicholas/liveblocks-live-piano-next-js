@@ -1,17 +1,17 @@
-import React from "react";
-import Head from "next/head";
-import SingleLineCodeBlock from "../components/SingleLineCodeBlock";
-import InlineCodeBlock from "../components/InlineCodeBlock";
+import React from 'react'
+import Head from 'next/head'
+import SingleLineCodeBlock from '../components/SingleLineCodeBlock'
+import InlineCodeBlock from '../components/InlineCodeBlock'
 
-import Piano from "./piano"
+import Piano from './piano'
 
-export async function getStaticProps() {
+export async function getStaticProps () {
   return {
     props: {
       isRunningOnCodeSandbox: process.env.CODESANDBOX_SSE != null,
-      hasSetupLiveblocksKey: process.env.LIVEBLOCKS_SECRET_KEY != null,
-    },
-  };
+      hasSetupLiveblocksKey: process.env.LIVEBLOCKS_SECRET_KEY != null
+    }
+  }
 }
 
 type Props = {
@@ -19,12 +19,12 @@ type Props = {
   isRunningOnCodeSandbox: boolean;
 };
 
-export default function Home({
+export default function Home ({
   hasSetupLiveblocksKey,
-  isRunningOnCodeSandbox,
+  isRunningOnCodeSandbox
 }: Props) {
   return (
-    <div>
+    <>
       <Head>
         <title>Liveblocks</title>
         <link
@@ -39,26 +39,29 @@ export default function Home({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </Head>
-        {hasSetupLiveblocksKey ? (
-          <main>
+      {hasSetupLiveblocksKey ? (
+        <main className="h-full">
             <Piano />
           </main>
-        ) : isRunningOnCodeSandbox ? (
-          <main className="container mx-auto px-8">
+      ) : isRunningOnCodeSandbox ? (
+        <main className="container mx-auto px-8">
           <h1 className="text-3xl font-semibold mt-24 mb-2">
-            Welcome to Liveblocks Next.js live avatars examples
+            Welcome to Liveblocks Next.js live piano example
           </h1>
             <p className="mt-12 mb-6">
-              To run{" "}
+              To run{' '}
               <a href="https://liveblocks.io" target="_blank" rel="noreferrer">
                 Liveblocks
-              </a>{" "}
+              </a>{' '}
               examples on CodeSandbox
             </p>
             <ul className="list-disc list-inside">
               <li className="mb-2">
-                Create an account on{" "}
+                Create an account on{' '}
                 <a
                   href="https://liveblocks.io"
                   target="_blank"
@@ -71,15 +74,15 @@ export default function Home({
                 Copy your secret key from the administration
               </li>
               <li className="mb-2">
-                Add a{" "}
+                Add a{' '}
                 <a
                   href="https://codesandbox.io/docs/secrets"
                   target="_blank"
                   rel="noreferrer"
                 >
                   secret key
-                </a>{" "}
-                named <InlineCodeBlock>LIVEBLOCKS_SECRET_KEY</InlineCodeBlock>{" "}
+                </a>{' '}
+                named <InlineCodeBlock>LIVEBLOCKS_SECRET_KEY</InlineCodeBlock>{' '}
                 to your CodeSandbox sandbox.
               </li>
               <li className="mb-2">
@@ -87,25 +90,25 @@ export default function Home({
               </li>
             </ul>
           </main>
-        ) : (
-          <main className="container mx-auto px-8">
+      ) : (
+        <main className="container mx-auto px-8">
           <h1 className="text-3xl font-semibold mt-24 mb-2">
-            Welcome to Liveblocks Next.js live avatars examples
+            Welcome to Liveblocks Next.js live piano example
           </h1>
             <p className="mt-12 mb-6">
-              To run{" "}
+              To run{' '}
               <a href="https://liveblocks.io" target="_blank" rel="noreferrer">
                 Liveblocks
-              </a>{" "}
+              </a>{' '}
               examples locally
             </p>
             <ul className="list-disc list-inside">
               <li className="mb-2">
-                Install all dependencies with{" "}
+                Install all dependencies with{' '}
                 <SingleLineCodeBlock>npm install</SingleLineCodeBlock>
               </li>
               <li className="mb-2">
-                Create an account on{" "}
+                Create an account on{' '}
                 <a
                   href="https://liveblocks.io"
                   target="_blank"
@@ -118,9 +121,9 @@ export default function Home({
                 Copy your secret key from the administration
               </li>
               <li className="mb-2">
-                Create a file named{" "}
+                Create a file named{' '}
                 <InlineCodeBlock>.env.local</InlineCodeBlock> and add your
-                Liveblocks secret as environment variable{" "}
+                Liveblocks secret as environment variable{' '}
                 <SingleLineCodeBlock>
                   LIVEBLOCKS_SECRET_KEY=sk_test_yourkey
                 </SingleLineCodeBlock>
@@ -131,7 +134,7 @@ export default function Home({
               </li>
             </ul>
           </main>
-        )}
-    </div>
-  );
+      )}
+    </>
+  )
 }

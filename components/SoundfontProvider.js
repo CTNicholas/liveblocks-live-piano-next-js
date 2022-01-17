@@ -10,8 +10,8 @@ class SoundfontProvider extends React.Component {
     hostname: PropTypes.string.isRequired,
     format: PropTypes.oneOf(['mp3', 'ogg']),
     soundfont: PropTypes.oneOf(['MusyngKite', 'FluidR3_GM']),
-    // audioContext: PropTypes.instanceOf(window.AudioContext),
     render: PropTypes.func
+    // audioContext: PropTypes.instanceOf(window.AudioContext)
   }
 
   static defaultProps = {

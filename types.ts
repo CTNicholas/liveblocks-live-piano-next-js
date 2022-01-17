@@ -1,5 +1,7 @@
 export type NotePresence = {
   instrument: string
-  notes: number[]
+  notes: number[],
+  color?: string
+  name?: string
   id?: number
 }

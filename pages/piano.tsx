@@ -1,4 +1,4 @@
-import { RoomProvider, useMyPresence, useOthers } from '@liveblocks/react'
+import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { NotePresence } from '../types'
@@ -16,6 +16,7 @@ const defaultInstrument = 'piano'
 function PianoDemo () {
   const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
   const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
+  const self = useSelf()
   const others = useOthers<NotePresence>()
 
   // Format `others` into NotePresence[] format
@@ -24,13 +25,29 @@ function PianoDemo () {
       // Skip if presence and presence.notes are not set for this remote user
       .filter(({ presence }) => presence?.notes)
       // Return instrument and notes
-      .map(({ presence = {}, connectionId }) => {
+      .map(({ presence = {}, info, connectionId }) => {
         return {
           instrument: presence.instrument || defaultInstrument,
           notes: presence.notes || [],
+          color: info.color,
+          name: info.name,
+          picture: info.picture,
           id: connectionId
         }
       })
+  }
+
+  const formatSelf = () => {
+    if (!self) {
+      return myPresence
+    }
+    return {
+      ...myPresence,
+      color: self.info.color,
+      name: self.info.name,
+      picture: self.info.picture,
+      id: self.connectionId
+    }
   }
 
   // Set initial values
@@ -41,14 +58,14 @@ function PianoDemo () {
   // Update current notes being played when other user plays a note
   useEffect(() => {
     if (myPresence.notes && others.count) {
-      setActiveNotes([myPresence, ...formatOthers()])
+      setActiveNotes([formatSelf(), ...formatOthers()])
     }
   }, [others])
 
   // Update current notes being played when local user plays a note
   useEffect(() => {
     if (myPresence.notes) {
-      setActiveNotes([myPresence, ...formatOthers()])
+      setActiveNotes([formatSelf(), ...formatOthers()])
     }
   }, [myPresence])
 
@@ -70,7 +87,7 @@ function PianoDemo () {
   }
 
   return (
-    <main>
+    <div className="bg-gray-100 flex justify-center items-center h-full">
       <LivePiano
         activeNotes={activeNotes}
         onPlayNote={handlePlayNote}
@@ -85,6 +102,6 @@ function PianoDemo () {
           </option>
         ))}
       </select>
-    </main>
+    </div>
   )
 }

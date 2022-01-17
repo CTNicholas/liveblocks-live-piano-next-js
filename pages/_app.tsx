@@ -1,14 +1,15 @@
-import { LiveblocksProvider } from "@liveblocks/react";
-import { createClient } from "@liveblocks/client";
-import { AppProps } from "next/app";
-import "tailwindcss/tailwind.css";
-import "../components/globals.css";
+import { LiveblocksProvider } from '@liveblocks/react'
+import { createClient } from '@liveblocks/client'
+import { AppProps } from 'next/app'
+import 'tailwindcss/tailwind.css'
+import '../components/globals.css'
+import '../components/LivePiano.css'
 
 const client = createClient({
-  authEndpoint: "/api/auth",
-});
+  authEndpoint: '/api/auth'
+})
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp ({ Component, pageProps }: AppProps) {
   return (
     /**
      * Add a LiveblocksProvider at the root of your app
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <LiveblocksProvider client={client}>
       <Component {...pageProps} />
     </LiveblocksProvider>
-  );
+  )
 }
-export default MyApp;
+
+export default MyApp

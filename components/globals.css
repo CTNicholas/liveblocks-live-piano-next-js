@@ -8,6 +8,11 @@
   }
 }
 
+html, body, #__next {
+  height: 100%;
+  font-family: Inter, sans-serif;
+}
+
 a {
   @apply text-blue-400;
   text-decoration: none;
@@ -29,4 +34,8 @@ a:focus-visible,
 input:focus-visible,
 button:focus-visible {
   @apply outline-none;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }

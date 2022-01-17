@@ -1,23 +1,24 @@
-import { KeyboardShortcuts, MidiNumbers, Piano } from 'react-piano'
+import { KeyboardShortcuts, MidiNumbers, Piano } from './react-piano-custom'
 import 'react-piano/dist/styles.css'
 import { useEffect, useState } from 'react'
 import SoundfontProvider from './SoundfontProvider'
 import { NotePresence } from '../types'
 
+/*
+Double tap on mouse makes it zoom in
+ */
+
 const instruments: { [name: string]: string } = {
   piano: 'acoustic_grand_piano',
   fiddle: 'fiddle',
-  //piano: 'acoustic_grand_piano',
-  guitar: 'electric_guitar_clean',
-  piccolo: 'piccolo',
-  // electric_guitar: 'distortion_guitar',
-  trumpet: 'muted_trumpet',
-  organ: 'reed_organ',
-  //organ: 'drawbar_organ',
-  marimba: 'marimba',
-  steelpan: 'steel_drums',
-  synth: 'lead_2_sawtooth',
   choir: 'choir_aahs',
+  organ: 'reed_organ', // drawbar_organ
+  guitar: 'electric_guitar_clean', // distortion_guitar
+  synth: 'lead_2_sawtooth',
+  steelpan: 'steel_drums',
+  marimba: 'marimba',
+  trumpet: 'muted_trumpet',
+  piccolo: 'piccolo',
 }
 export const instrumentNames = Object.keys(instruments)
 
@@ -52,17 +53,33 @@ export default function LivePiano ({
   defaultInstrument = 'piano'
 }: LivePianoProps) {
   const [audioContext, setAudioContext] = useState<AudioContext>()
+  const [keyColors, setKeyColors] = useState<{ [key: number]: string }>({})
+  const [flatNotes, setFlatNotes] = useState<number[]>([])
 
   useEffect(() => {
-    setAudioContext(new window.AudioContext())
+    setAudioContext(new AudioContext())
   }, [])
+
+  useEffect(() => {
+    const cols: { [note: number]: string } = {}
+    activeNotes.forEach(active => {
+      active.notes.forEach(note => {
+        if (active.color) {
+          cols[note] = active.color
+        }
+      })
+    })
+    setKeyColors(cols)
+
+    setFlatNotes(activeNotes.reduce((acc: any, active: any) => [...acc, ...active.notes], []))
+  }, [activeNotes])
 
   if (!audioContext || !Object.keys(activeNotes).length) {
     return <div>Loading...</div>
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-auto" style={{ touchAction: 'manipulation' }}>
       <div className="pointer-events-none absolute inset-0 opacity-0">
         {activeNotes.map(({ notes, instrument = defaultInstrument, id }) => (
           <SoundfontProvider
@@ -87,7 +104,7 @@ export default function LivePiano ({
         )
         )}
       </div>
-      <div className="">
+      <div className="opacity-0 absolute inset-0">
         <Piano
           noteRange={noteRange}
           width={width}
@@ -96,6 +113,18 @@ export default function LivePiano ({
           onPlayNoteInput={onPlayNote}
           onStopNoteInput={onStopNote}
           keyboardShortcuts={keyboardShortcuts}
+        />
+      </div>
+      <div className="pointer-events-none">
+        <Piano
+          activeNotes={flatNotes}
+          keyColors={keyColors}
+          noteRange={noteRange}
+          width={width}
+          playNote={() => {}}
+          stopNote={() => {}}
+          onPlayNoteInput={onPlayNote}
+          onStopNoteInput={onStopNote}
         />
       </div>
     </div>

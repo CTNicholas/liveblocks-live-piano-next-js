@@ -1,0 +1,28 @@
+div.ReactPiano__Keyboard {
+  @apply relative drop-shadow;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key {
+  @apply border-0;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key--natural {
+  @apply bg-white;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key--accidental {
+
+}
+
+/*noinspection ALL*/
+div.ReactPiano__Keyboard .ReactPiano__Key--active {
+  background: var(--key-color);
+}
+
+div.ReactPiano__Keyboard .ReactPiano__NoteLabelContainer {
+  @apply mb-2;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__NoteLabel {
+  @apply text-sm;
+}
