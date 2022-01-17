@@ -1,9 +1,9 @@
 div.ReactPiano__Keyboard {
-  @apply relative drop-shadow;
+  @apply relative;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key {
-  @apply border-0;
+  @apply border-0 shadow-lg;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--natural {
@@ -17,6 +17,12 @@ div.ReactPiano__Keyboard .ReactPiano__Key--accidental {
 /*noinspection ALL*/
 div.ReactPiano__Keyboard .ReactPiano__Key--active {
   background: var(--key-color);
+  @apply overflow-hidden;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key--accidental.ReactPiano__Key--active::after {
+  content: '';
+  @apply absolute inset-0 bg-gray-500 mix-blend-luminosity;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__NoteLabelContainer {

@@ -26,6 +26,20 @@ export default async function auth (req: NextApiRequest, res: NextApiResponse) {
 }
 
 const COLORS = [
+  '#f87171',
+  '#fb923c',
+  '#facc15',
+  '#a3e635',
+  '#4ade80',
+  '#2dd4bf',
+  '#22d3ee',
+  '#60a5fa',
+  '#c084fc',
+  '#f472b6',
+]
+
+/*
+const COLORS = [
   '#00c471',
   '#ff1bcc',
   '#fd7214',
@@ -38,6 +52,8 @@ const COLORS = [
   '#7bd203',
   '#02c6cb',
 ]
+
+ */
 
 /*
 const COLORS = [
