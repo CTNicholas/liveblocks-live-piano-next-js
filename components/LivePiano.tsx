@@ -96,7 +96,6 @@ export default function LivePiano ({
                   playNote={playNote}
                   stopNote={stopNote}
                   disabled={isLoading}
-                  keyboardShortcuts={showLetters ? keyboardShortcuts : null}
                 />
               )
             }}
