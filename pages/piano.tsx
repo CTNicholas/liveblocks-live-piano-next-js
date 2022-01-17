@@ -1,6 +1,7 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { LayoutGroup, motion } from 'framer-motion'
 
 export default function Root () {
   return (
@@ -101,10 +102,8 @@ function PianoDemo () {
 
   return (
     <div className="bg-gray-100 flex justify-center items-center h-full">
-
       <div className="flex flex-col drop-shadow-xl">
-        <div className="bg-white border-b flex justify-end rounded-t-lg">
-
+        <div className="bg-white border-b flex justify-end rounded-t-lg overflow-hidden">
           <div className="p-6 flex flex-grow">
             <Avatar url={self.info.picture} color={self.info.color} />
             <div className="ml-3">
@@ -112,19 +111,16 @@ function PianoDemo () {
               <SelectInstrument onInstrumentChange={handleInstrumentChange} />
             </div>
           </div>
-
-          {formatOthers().map(({ picture, name, color, instrument }) => (
-            <div className="p-6 flex">
+          {formatOthers().reverse().map(({ picture, name, color, instrument, id }) => (
+            <motion.div className="p-6 flex opacity-0" key={id} animate={{ y: [-100, 0], opacity: [0, 1] }}>
               <Avatar url={picture} color={color} />
               <div className="ml-3">
                 <div className="font-semibold">{name}</div>
                 <div>{capitalize(instrument)}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
-
         </div>
-
         <LivePiano
           activeNotes={activeNotes}
           onPlayNote={handlePlayNote}
@@ -132,21 +128,39 @@ function PianoDemo () {
           defaultInstrument={defaultInstrument}
           showLetters={true}
         />
-
       </div>
     </div>
   )
 }
 
-function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (e: ChangeEvent<HTMLSelectElement>) => void }) {
+function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event: ChangeEvent<HTMLSelectElement>) => void }) {
+  const select = useRef<HTMLSelectElement>(null)
+
+  function handleChange (event: ChangeEvent<HTMLSelectElement>) {
+    select.current?.blur()
+    onInstrumentChange(event)
+  }
+
   return (
-    <select onChange={onInstrumentChange} defaultValue={defaultInstrument} className="outline-0 rounded-sm hover:bg-gray-100 focus:ring-2 cursor-pointer mt-0.5 appearance-none w-full">
-      {instrumentNames.map(instrument => (
-        <option key={instrument} value={instrument}>
-          {capitalize(instrument)}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <span className="absolute top-0.5 -left-1 flex items-center pr-2 pointer-events-none">
+        <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </span>
+      <select
+        ref={select}
+        onChange={handleChange}
+        defaultValue={defaultInstrument}
+        className="outline-0 rounded-sm bg-transparent hover:ring-2 focus:ring-2 cursor-pointer mt-0.5 appearance-none w-full px-4 py-0.5 -mt-1.5"
+      >
+        {instrumentNames.map(instrument => (
+          <option key={instrument} value={instrument}>
+            {capitalize(instrument)}
+          </option>
+        ))}
+      </select>
+    </div>
   )
 }
 

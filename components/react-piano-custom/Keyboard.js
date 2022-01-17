@@ -62,7 +62,6 @@ class Keyboard extends React.Component {
 
   render() {
     const naturalKeyWidth = this.getNaturalKeyWidth();
-    console.log('pls', this.props.keyColors)
     return (
       <div
         className={classNames('ReactPiano__Keyboard', this.props.className)}
