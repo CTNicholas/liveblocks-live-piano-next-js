@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 /*
  * This example shows how to use Liveblocks to build a live piano app.
- * There are 10 instruments available.
+ * Multiple users can connect at once and play together.
  */
 export default function Root () {
   return (
@@ -18,7 +18,7 @@ export default function Root () {
 /*
  * The piano component is called LivePiano
  * LivePiano takes an array of NotePresence objects, one for each user
- * Add a note to notes[] to play it, and remove it from the array to stop it
+ * Add a note to `notes[]` to play it, and remove it from `notes[]` to stop it
  * Notes are in MIDI format. [52, 55, 57] will play a chord of E3, G3, A3
  */
 export type NotePresence = {
@@ -31,13 +31,18 @@ export type NotePresence = {
 
 const DEFAULT_INSTRUMENT = 'piano'
 
+/*
+ * PianoDemo is a Liveblocks wrapper around the LivePiano component
+ * We're converting our presence, and others presence, into a NotePresence array
+ * We then pass this array, `activeNotes`, to LivePiano
+ */
 function PianoDemo () {
-  const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
-  const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
   const self = useSelf()
   const others = useOthers<NotePresence>()
+  const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
+  const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
 
-  // Format `self` into NotePresence[] format
+  // Functions that formats `self` into NotePresence[] format
   const formatSelf = () => {
     if (!self) {
       return myPresence
@@ -51,7 +56,7 @@ function PianoDemo () {
     }
   }
 
-  // Format `others` into NotePresence[] format
+  // Function that formats `others` into NotePresence[] format
   const formatOthers = () => {
     return others.toArray()
       // Skip if presence and presence.notes are not set for this remote user
@@ -74,31 +79,32 @@ function PianoDemo () {
     updateMyPresence({ instrument: DEFAULT_INSTRUMENT, notes: [] })
   }, [])
 
-  // Update current notes being played when local user plays a note
+  // When `myPresence` updates (a local user playing/releasing a note), update `activeNotes` with current notes
   useEffect(() => {
     if (myPresence.notes) {
       setActiveNotes([formatSelf(), ...formatOthers()])
     }
   }, [myPresence])
 
-  // Update current notes being played when other user plays a note
+  // When `others` updates (someone else playing/releasing a note), update `activeNotes` with current notes
   useEffect(() => {
     if (myPresence.notes && others.count) {
       setActiveNotes([formatSelf(), ...formatOthers()])
     }
   }, [others])
 
-  // When local user plays a note, add note and update presence
+  // When local user plays a note, add note (if not already played) and update myPresence
   function handlePlayNote (note: number) {
-    const myNotes = [...myPresence.notes, note]
-    updateMyPresence({ notes: myNotes })
+    if (!myPresence.notes.includes(note)) {
+      const myNotes = [...myPresence.notes, note]
+      updateMyPresence({ notes: myNotes })
+    }
   }
 
-  // When local user releases a note, remove note and update presence
+  // When local user releases a note, remove note and update myPresence
   function handleStopNote (note: number) {
-    const myNotes = myPresence.notes.filter(n => n !== note)
-    updateMyPresence({ notes: myNotes })
-    console.log('STOPPING?', myNotes, note)
+    const myNotes = [...myPresence.notes.filter(n => n !== note)]
+    updateMyPresence({ notes: myNotes }) // Issue here? Next time function run, presence not updated yet. Skips an update?
   }
 
   // Change local user's instrument
@@ -154,15 +160,13 @@ function PianoDemo () {
   )
 }
 
-// Select element for instrument selection
+// HTML select element, for instrument selection
 function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event: ChangeEvent<HTMLSelectElement>) => void }) {
   const select = useRef<HTMLSelectElement>(null)
-
   function handleChange (event: ChangeEvent<HTMLSelectElement>) {
     select.current?.blur()
     onInstrumentChange(event)
   }
-
   return (
     <div className="relative">
       <span className="absolute top-0.5 -left-1 flex items-center pr-2 pointer-events-none">
