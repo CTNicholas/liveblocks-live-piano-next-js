@@ -76,7 +76,8 @@ export default function LivePiano ({
 
   useEffect(() => {
     // @ts-ignore
-    setAudioContext(new (window.AudioContext || window.webkitAudioContext)())
+    const context = window.AudioContext ? new window.AudioContext() : new window.webkitAudioContext()
+    setAudioContext(context)
 
     const handler = () => {
       setDimensions({
