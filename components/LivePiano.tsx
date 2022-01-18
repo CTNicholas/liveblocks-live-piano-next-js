@@ -75,7 +75,8 @@ export default function LivePiano ({
   const [noteRange, setNoteRange] = useState<any>(desktopNoteRange)
 
   useEffect(() => {
-    setAudioContext(new AudioContext())
+    // @ts-ignore
+    setAudioContext(new window.AudioContext() || window.webkitAudioContext)
 
     const handler = () => {
       setDimensions({
