@@ -44,6 +44,8 @@ class Key extends React.Component {
   };
 
   onStopNoteInput = () => {
+    // TODO remove
+    //console.log(this.props.midiNumber, 'key remove')
     this.props.onStopNoteInput(this.props.midiNumber);
   };
 

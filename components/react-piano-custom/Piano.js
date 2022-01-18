@@ -4,6 +4,7 @@ import ControlledPiano from './ControlledPiano';
 
 class Piano extends React.Component {
   static propTypes = {
+    glissando: PropTypes.bool,
     onlyAudio: PropTypes.bool,
     keyColors: PropTypes.object,
     noteRange: PropTypes.object.isRequired,

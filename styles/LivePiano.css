@@ -19,7 +19,7 @@ div.ReactPiano__Keyboard .ReactPiano__Key--natural {
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--accidental {
-  @apply bg-gray-600;
+  @apply bg-gray-600 duration-100;
 }
 
 /*noinspection ALL*/
@@ -30,7 +30,7 @@ div.ReactPiano__Keyboard .ReactPiano__Key--active {
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--active.ReactPiano__Key--accidental {
-  @apply h-[66%] scale-y-[98%];
+  @apply h-[66%] scale-y-[97%];
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--active.ReactPiano__Key--natural {

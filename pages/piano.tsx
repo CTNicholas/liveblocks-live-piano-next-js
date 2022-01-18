@@ -41,7 +41,6 @@ function PianoDemo () {
   const others = useOthers<NotePresence>()
   const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
   const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
-  const n = useRef<{ held: any[] }>({ held: [] })
 
   // Function that converts `self` into a new NotePresence object
   const formatSelf = () => {
@@ -80,6 +79,22 @@ function PianoDemo () {
     updateMyPresence({ instrument: DEFAULT_INSTRUMENT, notes: [] })
   }, [])
 
+  // When local user plays a note, add note (if not already being played) and update myPresence
+  function handlePlayNote (note: number) {
+    if (!myPresence.notes.includes(note)) {
+      const myNotes = [...myPresence.notes, note]
+      updateMyPresence({ notes: myNotes })
+    }
+  }
+
+  // When local user releases a note, remove note and update myPresence
+  function handleStopNote (note: number) {
+    const myNotes = [...myPresence.notes.filter((n, i) => {
+      return n !== note
+    })]
+    updateMyPresence({ notes: myNotes }) // Issue here? Next time function run, presence not updated yet. Skips an update?
+  }
+
   // When `myPresence` updates (a local user playing/releasing a note), update `activeNotes` with current notes
   useEffect(() => {
     if (myPresence.notes) {
@@ -93,26 +108,6 @@ function PianoDemo () {
       setActiveNotes([formatSelf(), ...formatOthers()])
     }
   }, [others])
-
-  // When local user plays a note, add note (if not already being played) and update myPresence
-  function handlePlayNote (note: number) {
-    if (!myPresence.notes.includes(note)) {
-      const myNotes = [...myPresence.notes, note]
-      console.log(note, myNotes)
-      updateMyPresence({ notes: myNotes })
-      n.current.held = myNotes
-    }
-  }
-
-  // When local user releases a note, remove note and update myPresence
-  function handleStopNote (note: number) {
-    const myNotes = [...myPresence.notes.filter((n, i) => {
-      //console.log(n, n !== note)
-      return n !== note
-    })]
-    updateMyPresence({ notes: myNotes }) // Issue here? Next time function run, presence not updated yet. Skips an update?
-    n.current.held = myNotes
-  }
 
   // Change local user's instrument
   function handleInstrumentChange (e: ChangeEvent<HTMLSelectElement>) {

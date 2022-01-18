@@ -6,6 +6,7 @@ import Keyboard from './Keyboard';
 
 class ControlledPiano extends React.Component {
   static propTypes = {
+    glissando: PropTypes.bool,
     onlyAudio: PropTypes.bool,
     keyColors: PropTypes.object,
     noteRange: PropTypes.object.isRequired,
@@ -184,7 +185,7 @@ class ControlledPiano extends React.Component {
           disabled={this.props.disabled}
           width={this.props.width}
           keyWidthToHeight={this.props.keyWidthToHeight}
-          gliss={this.state.isMouseDown}
+          gliss={this.props.glissando && this.state.isMouseDown}
           useTouchEvents={this.state.useTouchEvents}
           renderNoteLabel={this.renderNoteLabel}
         />

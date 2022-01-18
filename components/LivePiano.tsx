@@ -7,15 +7,15 @@ import { motion } from 'framer-motion'
 
 const instruments: { [name: string]: string } = {
   piano: 'acoustic_grand_piano',
-  fiddle: 'fiddle',
-  choir: 'choir_aahs',
   organ: 'reed_organ', // drawbar_organ
-  guitar: 'electric_guitar_clean', // distortion_guitar
   synth: 'lead_2_sawtooth',
+  guitar: 'electric_guitar_clean', // distortion_guitar
+  fiddle: 'fiddle',
   steelpan: 'steel_drums',
   marimba: 'marimba',
   trumpet: 'muted_trumpet',
   piccolo: 'piccolo',
+  choir: 'choir_aahs',
 }
 export const instrumentNames = Object.keys(instruments)
 
@@ -167,6 +167,7 @@ export default function LivePiano ({
       </div>
       <div className="pointer-events-none">
         <Piano
+          glissando={false}
           activeNotes={flatNotes}
           keyColors={keyColors}
           noteRange={noteRange}

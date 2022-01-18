@@ -80,7 +80,11 @@ class Keyboard extends React.Component {
               accidental={isAccidental}
               disabled={this.props.disabled}
               onPlayNoteInput={this.props.onPlayNoteInput}
-              onStopNoteInput={this.props.onStopNoteInput}
+              onStopNoteInput={(note) => {
+                // TODO remove
+                console.log(note, 'keyboard remove')
+                return this.props.onStopNoteInput(note)
+              }}
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
