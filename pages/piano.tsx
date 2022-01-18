@@ -1,8 +1,12 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { LayoutGroup, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
+/*
+ * This example shows how to use Liveblocks to build a live piano app.
+ * There are 10 instruments available.
+ */
 export default function Root () {
   return (
     <RoomProvider id="example-live-piano">
@@ -11,8 +15,12 @@ export default function Root () {
   )
 }
 
-const defaultInstrument = 'piano'
-
+/*
+ * The piano component is called LivePiano
+ * LivePiano takes an array of NotePresence objects, one for each user
+ * Add a note to notes[] to play it, and remove it from the array to stop it
+ * Notes are in MIDI format. [52, 55, 57] will play a chord of E3, G3, A3
+ */
 export type NotePresence = {
   instrument: string
   notes: number[],
@@ -20,6 +28,8 @@ export type NotePresence = {
   name?: string
   id?: number
 }
+
+const DEFAULT_INSTRUMENT = 'piano'
 
 function PianoDemo () {
   const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
@@ -49,7 +59,7 @@ function PianoDemo () {
       // Return instrument and notes
       .map(({ presence = {}, info, connectionId }) => {
         return {
-          instrument: presence.instrument || defaultInstrument,
+          instrument: presence.instrument || DEFAULT_INSTRUMENT,
           notes: presence.notes || [],
           color: info.color,
           name: info.name,
@@ -61,7 +71,7 @@ function PianoDemo () {
 
   // Set initial values
   useEffect(() => {
-    updateMyPresence({ instrument: defaultInstrument, notes: [] })
+    updateMyPresence({ instrument: DEFAULT_INSTRUMENT, notes: [] })
   }, [])
 
   // Update current notes being played when local user plays a note
@@ -88,6 +98,7 @@ function PianoDemo () {
   function handleStopNote (note: number) {
     const myNotes = myPresence.notes.filter(n => n !== note)
     updateMyPresence({ notes: myNotes })
+    console.log('STOPPING?', myNotes, note)
   }
 
   // Change local user's instrument
@@ -97,13 +108,17 @@ function PianoDemo () {
 
   // Still connecting to Liveblocks
   if (!self) {
-    return <div>Loading...</div>
+    return (
+      <div className="bg-gray-100 w-full h-full flex justify-center items-center">
+        <span>Connecting...</span>
+      </div>
+    )
   }
 
   return (
     <div className="bg-gray-100 flex justify-center items-center h-full">
       <div className="flex flex-col drop-shadow-xl">
-        <div className="bg-white border-b flex justify-end rounded-t-lg overflow-hidden">
+        <div className="bg-white mb-[1px] flex justify-end rounded-t-lg overflow-hidden">
           <div className="p-6 flex flex-grow">
             <Avatar url={self.info.picture} color={self.info.color} />
             <div className="ml-3">
@@ -112,27 +127,34 @@ function PianoDemo () {
             </div>
           </div>
           {formatOthers().reverse().map(({ picture, name, color, instrument, id }) => (
-            <motion.div className="p-6 flex opacity-0" key={id} animate={{ y: [-100, 0], opacity: [0, 1] }}>
-              <Avatar url={picture} color={color} />
-              <div className="ml-3">
-                <div className="font-semibold">{name}</div>
-                <div>{capitalize(instrument)}</div>
+            <>
+              <motion.div className="py-6 px-4 xl:px-6 first:pl-6 last:pr-6 hidden lg:flex opacity-0" key={id} animate={{ y: [-100, 0], opacity: [0, 1] }}>
+                <Avatar url={picture} color={color} />
+                <div className="ml-3">
+                  <div className="font-semibold">{name}</div>
+                  <div>{capitalize(instrument)}</div>
+                </div>
+              </motion.div>
+              <div className="flex lg:hidden justify-center items-center last:pr-6">
+                <Avatar url={picture} color={color} />
               </div>
-            </motion.div>
+            </>
           ))}
         </div>
         <LivePiano
           activeNotes={activeNotes}
           onPlayNote={handlePlayNote}
           onStopNote={handleStopNote}
-          defaultInstrument={defaultInstrument}
+          defaultInstrument={DEFAULT_INSTRUMENT}
           showLetters={true}
         />
       </div>
+      <motion.div animate={{ opacity: [1, 0], transitionEnd: { display: 'none' } }} className="absolute inset-0 bg-gray-100" />
     </div>
   )
 }
 
+// Select element for instrument selection
 function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event: ChangeEvent<HTMLSelectElement>) => void }) {
   const select = useRef<HTMLSelectElement>(null)
 
@@ -151,7 +173,7 @@ function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event:
       <select
         ref={select}
         onChange={handleChange}
-        defaultValue={defaultInstrument}
+        defaultValue={DEFAULT_INSTRUMENT}
         className="outline-0 rounded-sm bg-transparent hover:ring-2 focus:ring-2 cursor-pointer mt-0.5 appearance-none w-full px-4 py-0.5 -mt-1.5"
       >
         {instrumentNames.map(instrument => (
@@ -164,11 +186,12 @@ function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event:
   )
 }
 
+// Circular avatar
 function Avatar ({ url = '', color = '' }) {
   return (
     <span className="inline-block relative">
       <img
-        className="h-12 w-12 rounded-full"
+        className="h-12 w-12 rounded-full ring-4 ring-white"
         src={url}
         alt=""
       />
@@ -177,6 +200,7 @@ function Avatar ({ url = '', color = '' }) {
   )
 }
 
+// Capitalize first letter of string
 function capitalize (str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }

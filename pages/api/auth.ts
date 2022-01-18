@@ -8,8 +8,6 @@ export default async function auth (req: NextApiRequest, res: NextApiResponse) {
     return res.status(403).end()
   }
 
-  const randomPicture = Math.floor(Math.random() * 10)
-
   // For the avatar example, we're generating random users
   // and set their info from the authentication endpoint
   // See https://liveblocks.io/docs/api-reference/liveblocks-node#authorize for more information
@@ -18,8 +16,8 @@ export default async function auth (req: NextApiRequest, res: NextApiResponse) {
     secret: API_KEY,
     userInfo: {
       name: NAMES[Math.floor(Math.random() * NAMES.length)],
-      picture: `/assets/avatars/${randomPicture}.png`,
-      color: COLORS[randomPicture]
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      picture: `/assets/avatars/${Math.floor(Math.random() * 10)}.png`
     }
   })
   return res.status(response.status).end(response.body)
@@ -29,7 +27,7 @@ const COLORS = [
   '#f87171',
   '#fb923c',
   '#facc15',
-  '#a3e635',
+  '#5fda15',
   '#4ade80',
   '#2dd4bf',
   '#22d3ee',
@@ -37,40 +35,6 @@ const COLORS = [
   '#c084fc',
   '#f472b6',
 ]
-
-/*
-const COLORS = [
-  '#00c471',
-  '#ff1bcc',
-  '#fd7214',
-  '#fd2929',
-  '#7e63ff',
-  '#00c0a6',
-  '#d0b901',
-  '#4678ff',
-  '#ec01da',
-  '#7bd203',
-  '#02c6cb',
-]
-
- */
-
-/*
-const COLORS = [
-  '#96ffd2',
-  '#ffb9f0',
-  '#ffba8c',
-  '#f68e8e',
-  '#c6bbff',
-  '#a9fff5',
-  '#faed5f',
-  '#a1bbff',
-  '#ffa6f7',
-  '#e1ffb5',
-  '#6bf5fa',
-]
-
- */
 
 const NAMES = [
   'Charlie Layne',

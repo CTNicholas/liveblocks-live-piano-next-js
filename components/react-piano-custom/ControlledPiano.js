@@ -6,6 +6,7 @@ import Keyboard from './Keyboard';
 
 class ControlledPiano extends React.Component {
   static propTypes = {
+    onlyAudio: PropTypes.bool,
     keyColors: PropTypes.object,
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
@@ -27,6 +28,7 @@ class ControlledPiano extends React.Component {
   };
 
   static defaultProps = {
+    onlyAudio: false,
     renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) =>
       keyboardShortcut ? (
         <div
@@ -160,6 +162,10 @@ class ControlledPiano extends React.Component {
   };
 
   render() {
+    if (this.props.onlyAudio) {
+      return null
+    }
+
     return (
       <div
         style={{ width: '100%', height: '100%' }}
