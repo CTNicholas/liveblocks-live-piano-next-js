@@ -29,6 +29,7 @@ class SoundfontProvider extends React.Component {
   }
 
   componentDidMount () {
+    this.mounted = true
     this.loadInstrument(this.props.instrumentName)
   }
 
@@ -36,6 +37,10 @@ class SoundfontProvider extends React.Component {
     if (prevProps.instrumentName !== this.props.instrumentName) {
       this.loadInstrument(this.props.instrumentName)
     }
+  }
+
+  componentWillUnmount () {
+    this.mounted = false
   }
 
   loadInstrument = instrumentName => {
@@ -50,6 +55,9 @@ class SoundfontProvider extends React.Component {
         return `${this.props.hostname}/${soundfont}/${name}-${format}.js`
       }
     }).then(instrument => {
+      if (!this.mounted) {
+        return
+      }
       this.setState({
         instrument
       })

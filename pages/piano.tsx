@@ -1,6 +1,6 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react'
 import { motion } from 'framer-motion'
 
 /*
@@ -41,8 +41,9 @@ function PianoDemo () {
   const others = useOthers<NotePresence>()
   const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
   const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
+  const n = useRef<{ held: any[] }>({ held: [] })
 
-  // Functions that formats `self` into NotePresence[] format
+  // Function that converts `self` into a new NotePresence object
   const formatSelf = () => {
     if (!self) {
       return myPresence
@@ -56,7 +57,7 @@ function PianoDemo () {
     }
   }
 
-  // Function that formats `others` into NotePresence[] format
+  // Function that converts `others` into a new array of NotePresence objects
   const formatOthers = () => {
     return others.toArray()
       // Skip if presence and presence.notes are not set for this remote user
@@ -93,18 +94,24 @@ function PianoDemo () {
     }
   }, [others])
 
-  // When local user plays a note, add note (if not already played) and update myPresence
+  // When local user plays a note, add note (if not already being played) and update myPresence
   function handlePlayNote (note: number) {
     if (!myPresence.notes.includes(note)) {
       const myNotes = [...myPresence.notes, note]
+      console.log(note, myNotes)
       updateMyPresence({ notes: myNotes })
+      n.current.held = myNotes
     }
   }
 
   // When local user releases a note, remove note and update myPresence
   function handleStopNote (note: number) {
-    const myNotes = [...myPresence.notes.filter(n => n !== note)]
+    const myNotes = [...myPresence.notes.filter((n, i) => {
+      //console.log(n, n !== note)
+      return n !== note
+    })]
     updateMyPresence({ notes: myNotes }) // Issue here? Next time function run, presence not updated yet. Skips an update?
+    n.current.held = myNotes
   }
 
   // Change local user's instrument
@@ -133,8 +140,8 @@ function PianoDemo () {
             </div>
           </div>
           {formatOthers().reverse().map(({ picture, name, color, instrument, id }) => (
-            <>
-              <motion.div className="py-6 px-4 xl:px-6 first:pl-6 last:pr-6 hidden lg:flex opacity-0" key={id} animate={{ y: [-100, 0], opacity: [0, 1] }}>
+            <Fragment key={id}>
+              <motion.div className="py-6 px-4 xl:px-6 first:pl-6 last:pr-6 hidden lg:flex opacity-0" animate={{ y: [-100, 0], opacity: [0, 1] }}>
                 <Avatar url={picture} color={color} />
                 <div className="ml-3">
                   <div className="font-semibold">{name}</div>
@@ -144,7 +151,7 @@ function PianoDemo () {
               <div className="flex lg:hidden justify-center items-center last:pr-6">
                 <Avatar url={picture} color={color} />
               </div>
-            </>
+            </Fragment>
           ))}
         </div>
         <LivePiano

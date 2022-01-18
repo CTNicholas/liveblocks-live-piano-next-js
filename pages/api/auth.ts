@@ -29,11 +29,11 @@ const COLORS = [
   '#facc15',
   '#5fda15',
   '#4ade80',
-  '#2dd4bf',
+  '#34ead2',
   '#22d3ee',
   '#60a5fa',
   '#c084fc',
-  '#f472b6',
+  '#ff7dc0',
 ]
 
 const NAMES = [

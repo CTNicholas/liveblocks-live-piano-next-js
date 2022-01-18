@@ -1,25 +1,40 @@
 div.ReactPiano__Keyboard {
+  --key-color: #fff;
   @apply relative select-none;
+}
+
+.ReactPiano__Key--accidental {
+  --key-color: #000;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-tap-highlight-color: transparent;
-  @apply border-0 shadow-lg;
+  @apply border-0 shadow-lg will-change-transform transition-transform origin-top ease-in-out;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--natural {
+  box-shadow:  0 4px 0 rgba(0, 0, 0, 0.1), 0 4px 0 var(--key-color);
   @apply bg-white;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--accidental {
-
+  @apply bg-gray-600;
 }
 
 /*noinspection ALL*/
 div.ReactPiano__Keyboard .ReactPiano__Key--active {
   background: var(--key-color);
+  border-color: var(--key-color);
   @apply overflow-hidden;
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key--active.ReactPiano__Key--accidental {
+  @apply h-[66%] scale-y-[98%];
+}
+
+div.ReactPiano__Keyboard .ReactPiano__Key--active.ReactPiano__Key--natural {
+  @apply scale-y-[98%] h-full;
 }
 
 div.ReactPiano__Keyboard .ReactPiano__Key--accidental.ReactPiano__Key--active::after {

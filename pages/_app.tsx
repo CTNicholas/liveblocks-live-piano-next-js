@@ -2,8 +2,8 @@ import { LiveblocksProvider } from '@liveblocks/react'
 import { createClient } from '@liveblocks/client'
 import { AppProps } from 'next/app'
 import 'tailwindcss/tailwind.css'
-import '../components/globals.css'
-import '../components/LivePiano.css'
+import '../styles/globals.css'
+import '../styles/LivePiano.css'
 
 const client = createClient({
   authEndpoint: '/api/auth'
