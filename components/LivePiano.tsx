@@ -41,7 +41,7 @@ const KEYBOARD_SHORTCUTS = {
   desktop: KeyboardShortcuts.create({
     firstNote: NOTE_RANGE.desktop.first,
     lastNote: NOTE_RANGE.desktop.last,
-    keyboardConfig: [...KeyboardShortcuts.QWERTY_ROW, ...KeyboardShortcuts.BOTTOM_ROW]
+    keyboardConfig: [...KeyboardShortcuts.BOTTOM_ROW, ...KeyboardShortcuts.QWERTY_ROW]
   })
 }
 
