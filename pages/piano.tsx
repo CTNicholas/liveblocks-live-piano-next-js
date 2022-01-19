@@ -92,7 +92,7 @@ function PianoDemo () {
     const myNotes = [...myPresence.notes.filter((n, i) => {
       return n !== note
     })]
-    updateMyPresence({ notes: myNotes }) // Issue here? Next time function run, presence not updated yet. Skips an update?
+    updateMyPresence({ notes: myNotes })
   }
 
   // When `myPresence` updates (a local user playing/releasing a note), update `activeNotes` with current notes
