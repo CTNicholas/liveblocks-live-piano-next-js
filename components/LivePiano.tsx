@@ -49,7 +49,6 @@ type LivePianoProps = {
   activeNotes: NotePresence[]
   onPlayNote: (note: number) => void
   onStopNote: (note: number) => void
-  showLetters: boolean
   defaultInstrument: string
 }
 
@@ -57,7 +56,6 @@ export default function LivePiano ({
   onPlayNote = () => {},
   onStopNote = () => {},
   activeNotes = [], // [0] is always local user
-  showLetters = false,
   defaultInstrument = 'piano'
 }: LivePianoProps) {
   const [audioContext, setAudioContext] = useState<AudioContext>()

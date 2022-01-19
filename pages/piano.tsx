@@ -154,7 +154,6 @@ function PianoDemo () {
           onPlayNote={handlePlayNote}
           onStopNote={handleStopNote}
           defaultInstrument={DEFAULT_INSTRUMENT}
-          showLetters={true}
         />
       </div>
       <motion.div animate={{ opacity: [1, 0], transitionEnd: { display: 'none' } }} className="absolute inset-0 bg-gray-100" />
