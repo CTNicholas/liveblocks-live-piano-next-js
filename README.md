@@ -1,6 +1,6 @@
 # [Live Piano](https://livepiano.ctnicholas.dev)
 
-This repo shows how to implement a live piano with [Liveblocks](https://liveblocks.io) and [Next.js](https://nextjs.org/).
+This repo shows how to build a live piano with [Liveblocks](https://liveblocks.io) and [Next.js](https://nextjs.org/).
 
 ![Live piano screenshot](https://livepiano.ctnicholas.dev/screenshot.png)
 

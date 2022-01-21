@@ -37,22 +37,39 @@ export default function Home ({
   return (
     <>
       <Head>
-        <title>Liveblocks</title>
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
+        <title>Live Piano • ctnicholas.dev</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <meta name="description" content="A live piano built with Liveblocks and Next.js" />
+        <meta name="og:description" content="A live piano built with Liveblocks and Next.js" />
+        <meta property="og:title" content="Live Piano • ctnicholas.dev" />
+        <meta property="og:url" content="https://livepiano.ctnicholas.dev" />
+        <meta property="article:author" content="https://www.ctnicholas.dev" />
+        <meta property="og:image" content="/screenshot.png" />
+        <meta property="og:image:alt" content="A live piano built with Liveblocks and Next.js" />
+        <meta property="og:image:height" content="964" />
+        <meta name="application-name" content="CTNicholas — Web Development &amp; Design" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="CTNicholas Blog" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-TileColor" content="#18181b" />
+        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#282830" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@ctnicholasdev" />
+        <meta name="twitter:creator" content="@ctnicholasdev" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:site_name" content="CTNicholas" />
       </Head>
       {hasSetupLiveblocksKey ? (
         <main className="h-full">
