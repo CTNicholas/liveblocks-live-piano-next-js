@@ -2,14 +2,14 @@
 
 This repo shows how to implement a live piano with [Liveblocks](https://liveblocks.io) and [Next.js](https://nextjs.org/).
 
-![Live piano screenshot](https://raw.githubusercontent.com/CTNicholas/liveblocks-live-piano-next-js/main/screenshot.png)
+![Live piano screenshot](https://livepiano.ctnicholas.dev/screenshot.png)
 
 
 ## [Try it out](https://livepiano.ctnicholas.dev)
 
 There are 10 different instruments to choose from. To play the piano, tap/click the keys on the screen or use your computer's keyboard.
 
-![Live piano keyboard mapping](https://raw.githubusercontent.com/CTNicholas/liveblocks-live-piano-next-js/main/screenshot-mapping.png)
+![Live piano keyboard mapping](https://livepiano.ctnicholas.dev/screenshot-mapping.png)
 
 
 ## Getting started
