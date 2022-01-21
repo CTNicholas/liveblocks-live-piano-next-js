@@ -4,6 +4,14 @@ import SingleLineCodeBlock from '../components/SingleLineCodeBlock'
 import InlineCodeBlock from '../components/InlineCodeBlock'
 
 import Piano from './piano'
+import ExampleInfo from '../components/ExampleInfo'
+
+const exampleInfo = {
+  title: 'Live piano',
+  description: 'Open in multiple windows, or share the link, to play piano live with others.',
+  githubHref: 'https://github.com/CTNicholas/liveblocks-live-piano-next-js',
+  codeSandboxHref: ''
+}
 
 export async function getStaticProps () {
   return {
@@ -41,12 +49,13 @@ export default function Home ({
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </Head>
       {hasSetupLiveblocksKey ? (
         <main className="h-full">
-            <Piano />
-          </main>
+          <ExampleInfo {...exampleInfo} />
+          <Piano />
+        </main>
       ) : isRunningOnCodeSandbox ? (
         <main className="container mx-auto px-8">
           <h1 className="text-3xl font-semibold mt-24 mb-2">
