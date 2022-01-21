@@ -1,6 +1,6 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
-import { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react'
+import { ChangeEvent, useEffect, useRef, useState, Fragment, useLayoutEffect } from 'react'
 import { motion } from 'framer-motion'
 
 /*
@@ -8,8 +8,16 @@ import { motion } from 'framer-motion'
  * Multiple users can connect at once and play together.
  */
 export default function Root () {
+  let room: string = ''
+
+  // If in browser, get value of ?room= from the URL
+  // The room parameter is added in pages/_middleware.ts
+  if (typeof window !== 'undefined') {
+    room = new URLSearchParams(document.location.search).get('room') || ''
+  }
+
   return (
-    <RoomProvider id="example-live-piano">
+    <RoomProvider id={room}>
       <PianoDemo />
     </RoomProvider>
   )
