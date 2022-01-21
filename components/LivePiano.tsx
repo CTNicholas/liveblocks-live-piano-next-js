@@ -1,7 +1,7 @@
 import { KeyboardShortcuts, MidiNumbers, Piano } from './react-piano-custom'
 import 'react-piano/dist/styles.css'
 import { useEffect, useState } from 'react'
-import SoundfontProvider from './SoundfontProvider'
+import SoundfontProvider from './react-piano-custom/SoundfontProvider'
 import { NotePresence } from '../types'
 import { motion } from 'framer-motion'
 
@@ -24,7 +24,7 @@ const SOUNDFONT_LOCATION = '/assets/instruments'
 const NOTE_RANGE = {
   mobile: {
     first: MidiNumbers.fromNote('c3'),
-    last: MidiNumbers.fromNote('a4')
+    last: MidiNumbers.fromNote('e4')
   },
   desktop: {
     first: MidiNumbers.fromNote('c3'),

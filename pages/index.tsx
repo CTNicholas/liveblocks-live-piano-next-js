@@ -2,9 +2,12 @@ import React from 'react'
 import Head from 'next/head'
 import SingleLineCodeBlock from '../components/SingleLineCodeBlock'
 import InlineCodeBlock from '../components/InlineCodeBlock'
-
 import Piano from './piano'
 import ExampleInfo from '../components/ExampleInfo'
+
+/*
+ * Check in piano.tsx for the live piano code and guided comments
+ */
 
 const exampleInfo = {
   title: 'Live piano',
