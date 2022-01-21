@@ -1,6 +1,6 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
-import { ChangeEvent, useEffect, useRef, useState, Fragment, useLayoutEffect } from 'react'
+import { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react'
 import { motion } from 'framer-motion'
 
 /*
@@ -97,7 +97,7 @@ function PianoDemo () {
 
   // When local user releases a note, remove note and update myPresence
   function handleStopNote (note: number) {
-    const myNotes = [...myPresence.notes.filter((n, i) => {
+    const myNotes = [...myPresence.notes.filter(n => {
       return n !== note
     })]
     updateMyPresence({ notes: myNotes })
@@ -135,7 +135,7 @@ function PianoDemo () {
     <div className="bg-gray-100 flex justify-center items-center h-full">
       <div className="flex flex-col drop-shadow-xl">
         <div className="bg-white mb-[1px] flex justify-end rounded-t-lg overflow-hidden">
-          <div className="p-6 flex flex-grow">
+          <div className="p-6 pr-0 sm:pr-6 flex flex-grow">
             <Avatar url={self.info.picture} color={self.info.color} />
             <div className="ml-3">
               <div className="font-semibold">You</div>

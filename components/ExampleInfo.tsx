@@ -29,7 +29,7 @@ export default function ExampleInfo({
 
   return (
     <div
-      className="fixed z-50 top-4 left-4 px-6 w-96 rounded-lg font-karla text-gray-400 text bg-gray-900"
+      className="fixed z-50 top-4 left-4 right-4 px-6 max-w-full sm:w-96 rounded-lg font-karla text-gray-400 text bg-gray-900"
     >
       <div className="flex justify-between pt-6 mt-0.5">
         <div>
