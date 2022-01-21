@@ -37,7 +37,7 @@ export default function Home ({
   return (
     <>
       <Head>
-        <title>Live Piano • ctnicholas.dev</title>
+        <title>Live piano • ctnicholas.dev</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -52,7 +52,7 @@ export default function Home ({
         <meta name="application-name" content="CTNicholas — Web Development &amp; Design" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="CTNicholas Blog" />
+        <meta name="apple-mobile-web-app-title" content="ctnicholas.dev" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-TileColor" content="#18181b" />
@@ -69,7 +69,7 @@ export default function Home ({
         <meta name="twitter:site" content="@ctnicholasdev" />
         <meta name="twitter:creator" content="@ctnicholasdev" />
         <meta property="og:locale" content="en_GB" />
-        <meta property="og:site_name" content="CTNicholas" />
+        <meta property="og:site_name" content="ctnicholas.dev" />
       </Head>
       {hasSetupLiveblocksKey ? (
         <main className="h-full">
