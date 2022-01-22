@@ -13,7 +13,7 @@ const exampleInfo = {
   title: 'Live piano',
   description: 'Open in multiple windows, or share the link, to play piano live with others.',
   githubHref: 'https://github.com/CTNicholas/liveblocks-live-piano-next-js',
-  codeSandboxHref: ''
+  codeSandboxHref: 'https://codesandbox.io/s/live-piano-with-liveblocks-and-next-js-pgkp5'
 }
 
 export async function getStaticProps () {

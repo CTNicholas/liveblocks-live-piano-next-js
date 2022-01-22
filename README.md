@@ -26,7 +26,7 @@ There are 10 different instruments to choose from. To play the piano, tap/click 
 
 ### Run examples on CodeSandbox
 
-- Open this repository on CodeSandbox with this [link](https://codesandbox.io/s/github/liveblocks/liveblocks/tree/main/examples/nextjs-live-avatars)
+- Open this repository on CodeSandbox with this [link](https://codesandbox.io/s/live-piano-with-liveblocks-and-next-js-pgkp5)
 
 - Create an account on [liveblocks.io](https://liveblocks.io/dashboard)
 
