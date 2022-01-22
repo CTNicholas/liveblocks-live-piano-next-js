@@ -19,7 +19,7 @@ const instruments: { [name: string]: string } = {
 }
 export const instrumentNames = Object.keys(instruments)
 
-const SOUNDFONT_LOCATION = '/assets/instruments'
+const SOUNDFONT_LOCATION = 'https://livepiano.ctnicholas.dev/assets/instruments'
 
 const NOTE_RANGE = {
   mobile: {

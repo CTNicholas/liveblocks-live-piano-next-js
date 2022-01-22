@@ -8,16 +8,8 @@ import { motion } from 'framer-motion'
  * Multiple users can connect at once and play together.
  */
 export default function Root () {
-  let room: string = ''
-
-  // If in browser, get value of ?room= from the URL
-  // The room parameter is added in pages/_middleware.ts
-  if (typeof window !== 'undefined') {
-    room = new URLSearchParams(document.location.search).get('room') || ''
-  }
-
   return (
-    <RoomProvider id={room}>
+    <RoomProvider id="live-piano">
       <PianoDemo />
     </RoomProvider>
   )
