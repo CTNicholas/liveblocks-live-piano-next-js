@@ -77,7 +77,10 @@ export default function LivePiano ({
     // @ts-ignore
     const context = window.AudioContext ? new window.AudioContext() : new window.webkitAudioContext()
 
-    const startContext = () => context.resume()
+    const startContext = () => {
+      console.log('started')
+      context.resume()
+    }
     if (context.state === 'suspended') {
       document.addEventListener('touchstart', startContext, { once: true })
       document.addEventListener('mousedown', startContext, { once: true })

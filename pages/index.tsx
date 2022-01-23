@@ -9,11 +9,23 @@ import ExampleInfo from '../components/ExampleInfo'
  * Check in piano.tsx for the live piano code and guided comments
  */
 
+const MainComponent = Piano
+
 const exampleInfo = {
+  hide: true,
   title: 'Live piano',
   description: 'Open in multiple windows, or share the link, to play piano live with others.',
   githubHref: 'https://github.com/CTNicholas/liveblocks-live-piano-next-js',
   codeSandboxHref: 'https://codesandbox.io/s/live-piano-with-liveblocks-and-next-js-pgkp5'
+}
+
+const meta = {
+  title: 'Live Piano • ctnicholas.dev',
+  description: 'Open in multiple windows, or share the link, to play piano live with others.',
+  image: '/screenshot.png',
+  url: 'https://livepiano.ctnicholas.dev',
+  author: 'https://ctnicholas.dev',
+  twitter: '@ctnicholasdev'
 }
 
 export async function getStaticProps () {
@@ -37,22 +49,22 @@ export default function Home ({
   return (
     <>
       <Head>
-        <title>Live Piano • ctnicholas.dev</title>
+        <title>{meta.title}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <meta name="description" content="A live piano built with Liveblocks and Next.js" />
-        <meta name="og:description" content="A live piano built with Liveblocks and Next.js" />
-        <meta property="og:title" content="Live Piano • ctnicholas.dev" />
-        <meta property="og:url" content="https://livepiano.ctnicholas.dev" />
-        <meta property="article:author" content="https://www.ctnicholas.dev" />
-        <meta property="og:image" content="/screenshot.png" />
-        <meta property="og:image:alt" content="A live piano built with Liveblocks and Next.js" />
+        <meta name="description" content={meta.description} />
+        <meta name="og:description" content={meta.description} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:url" content={meta.url} />
+        <meta property="article:author" content={meta.author} />
+        <meta property="og:image" content={meta.image} />
+        <meta property="og:image:alt" content={meta.description} />
         <meta property="og:image:height" content="964" />
-        <meta name="application-name" content="CTNicholas — Web Development &amp; Design" />
+        <meta name="application-name" content={meta.title} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ctnicholas.dev" />
+        <meta name="apple-mobile-web-app-title" content={meta.title} />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-TileColor" content="#18181b" />
@@ -65,15 +77,15 @@ export default function Home ({
         <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#282830" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@ctnicholasdev" />
-        <meta name="twitter:creator" content="@ctnicholasdev" />
+        <meta name="twitter:site" content={meta.twitter} />
+        <meta name="twitter:creator" content={meta.twitter} />
         <meta property="og:locale" content="en_GB" />
-        <meta property="og:site_name" content="ctnicholas.dev" />
+        <meta property="og:site_name" content={meta.title} />
       </Head>
       {hasSetupLiveblocksKey ? (
         <main className="h-full">
           <ExampleInfo {...exampleInfo} />
-          <Piano />
+          <MainComponent />
         </main>
       ) : isRunningOnCodeSandbox ? (
         <main className="container mx-auto px-8">
