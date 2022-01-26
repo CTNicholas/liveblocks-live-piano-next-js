@@ -17,7 +17,7 @@ export default function Root () {
   }
 
   return (
-    <RoomProvider id={room}>
+    <RoomProvider id={'live-piano-' + room}>
       <PianoDemo />
     </RoomProvider>
   )
