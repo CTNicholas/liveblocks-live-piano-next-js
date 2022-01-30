@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import ExternalLink from './ExternalLink'
 
-type Props = {
+export type ExampleInfoProps = {
+  hide: boolean;
   title: string;
   description?: string;
   githubHref?: string;
   codeSandboxHref?: string;
+  twitterHref?: string
   children?: React.ReactNode;
 };
 
-export default function ExampleInfo({
+export function ExampleInfo ({
+  hide,
   title,
   description,
   githubHref,
   codeSandboxHref,
+  twitterHref = 'https://twitter.com/ctnicholasdev',
   children
-}: Props) {
-  const [isShowing, setIsShowing] = useState(true);
-  const [currentUrl, setCurrentUrl] = useState('');
+}: ExampleInfoProps) {
+  const [isShowing, setIsShowing] = useState(true)
+  const [currentUrl, setCurrentUrl] = useState('')
 
   useEffect(() => {
-    setCurrentUrl(window.location.href);
+    setCurrentUrl(window.location.href)
   }, [])
 
-  if (!isShowing) {
-    return null;
+  if (!isShowing || hide) {
+    return null
   }
 
   return (
@@ -33,14 +36,13 @@ export default function ExampleInfo({
     >
       <div className="flex justify-between pt-6 mt-0.5">
         <div>
-
           <h1 className="text-2xl text-white font-extrabold tracking-tight">{title}</h1>
         </div>
 
         <button
           className="text-gray-400 hover:text-gray-300 focus:text-gray-300 w-8 h-8 flex items-center justify-center -mr-3 rounded-full"
           onClick={() => {
-            setIsShowing(false);
+            setIsShowing(false)
           }}
         >
           <svg
@@ -62,9 +64,8 @@ export default function ExampleInfo({
             />
           </svg>
         </button>
-
-
       </div>
+
       <p className="mt-3 leading-relaxed">{children || description}</p>
 
       <ExternalLink href={currentUrl} className="block bg-gray-700 hover:bg-gray-600 text-center w-full mt-5 mb-4 p-2.5 rounded font-bold text-white">
@@ -82,49 +83,83 @@ export default function ExampleInfo({
             ctnicholas.dev
           </a>
         </span>
-        <ul className="flex items-center -ml-2 mt-2">
+        <ul className="flex items-center -mr-2 mt-2">
           <li>
-            <a
-              className="transition-colors hover:text-white cursor-pointer flex items-center justify-center p-2 text-gray-400 rounded-full"
-              href={githubHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open in Github"
-              aria-label="Open in Github"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
+            {twitterHref && (
+              <a
+                className="transition-colors hover:text-white cursor-pointer flex items-center justify-center p-2 text-gray-400 rounded-full mr-[-1px]"
+                href={twitterHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open in Github"
+                aria-label="Open in Github"
               >
-                <path d="M10 1.66664C8.90569 1.66664 7.82206 1.88219 6.81101 2.30098C5.79997 2.71977 4.88131 3.3336 4.10749 4.10742C2.54468 5.67022 1.66671 7.78984 1.66671 9.99998C1.66671 13.6833 4.05838 16.8083 7.36671 17.9166C7.78338 17.9833 7.91671 17.725 7.91671 17.5V16.0916C5.60838 16.5916 5.11671 14.975 5.11671 14.975C4.73338 14.0083 4.19171 13.75 4.19171 13.75C3.43338 13.2333 4.25004 13.25 4.25004 13.25C5.08338 13.3083 5.52504 14.1083 5.52504 14.1083C6.25004 15.375 7.47504 15 7.95004 14.8C8.02504 14.2583 8.24171 13.8916 8.47504 13.6833C6.62504 13.475 4.68338 12.7583 4.68338 9.58331C4.68338 8.65831 5.00004 7.91664 5.54171 7.32498C5.45838 7.11664 5.16671 6.24998 5.62504 5.12498C5.62504 5.12498 6.32504 4.89998 7.91671 5.97498C8.57504 5.79164 9.29171 5.69998 10 5.69998C10.7084 5.69998 11.425 5.79164 12.0834 5.97498C13.675 4.89998 14.375 5.12498 14.375 5.12498C14.8334 6.24998 14.5417 7.11664 14.4584 7.32498C15 7.91664 15.3167 8.65831 15.3167 9.58331C15.3167 12.7666 13.3667 13.4666 11.5084 13.675C11.8084 13.9333 12.0834 14.4416 12.0834 15.2166V17.5C12.0834 17.725 12.2167 17.9916 12.6417 17.9166C15.95 16.8 18.3334 13.6833 18.3334 9.99998C18.3334 8.90563 18.1178 7.82199 17.699 6.81095C17.2803 5.7999 16.6664 4.88124 15.8926 4.10742C15.1188 3.3336 14.2001 2.71977 13.1891 2.30098C12.178 1.88219 11.0944 1.66664 10 1.66664V1.66664Z" />
-              </svg>
-            </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                </svg>
+              </a>
+            )}
           </li>
           <li>
-            <a
-              className="transition-colors hover:text-white cursor-pointer flex items-center justify-center p-2 text-gray-400 rounded-full"
-              href={codeSandboxHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open in CodeSandbox"
-              aria-label="Open in CodeSandbox"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
+            {githubHref && (
+              <a
+                className="transition-colors hover:text-white cursor-pointer flex items-center justify-center p-2 text-gray-400 rounded-full"
+                href={githubHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open in Github"
+                aria-label="Open in Github"
               >
-                <path d="M1 4L7.969 0L14.9405 4L15.0005 11.966L7.969 16L1 12V4ZM2.393 5.6535V8.8255L4.622 10.065V12.409L7.2705 13.9405V8.425L2.393 5.6535ZM13.552 5.6535L8.6745 8.4245V13.94L11.3205 12.4085V10.0675L13.5525 8.8255L13.552 5.6535ZM3.0885 4.401L7.9585 7.164L12.8385 4.3775L10.258 2.9115L7.9845 4.2085L5.698 2.896L3.0885 4.401Z" />
-              </svg>
-            </a>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M10 1.66664C8.90569 1.66664 7.82206 1.88219 6.81101 2.30098C5.79997 2.71977 4.88131 3.3336 4.10749 4.10742C2.54468 5.67022 1.66671 7.78984 1.66671 9.99998C1.66671 13.6833 4.05838 16.8083 7.36671 17.9166C7.78338 17.9833 7.91671 17.725 7.91671 17.5V16.0916C5.60838 16.5916 5.11671 14.975 5.11671 14.975C4.73338 14.0083 4.19171 13.75 4.19171 13.75C3.43338 13.2333 4.25004 13.25 4.25004 13.25C5.08338 13.3083 5.52504 14.1083 5.52504 14.1083C6.25004 15.375 7.47504 15 7.95004 14.8C8.02504 14.2583 8.24171 13.8916 8.47504 13.6833C6.62504 13.475 4.68338 12.7583 4.68338 9.58331C4.68338 8.65831 5.00004 7.91664 5.54171 7.32498C5.45838 7.11664 5.16671 6.24998 5.62504 5.12498C5.62504 5.12498 6.32504 4.89998 7.91671 5.97498C8.57504 5.79164 9.29171 5.69998 10 5.69998C10.7084 5.69998 11.425 5.79164 12.0834 5.97498C13.675 4.89998 14.375 5.12498 14.375 5.12498C14.8334 6.24998 14.5417 7.11664 14.4584 7.32498C15 7.91664 15.3167 8.65831 15.3167 9.58331C15.3167 12.7666 13.3667 13.4666 11.5084 13.675C11.8084 13.9333 12.0834 14.4416 12.0834 15.2166V17.5C12.0834 17.725 12.2167 17.9916 12.6417 17.9166C15.95 16.8 18.3334 13.6833 18.3334 9.99998C18.3334 8.90563 18.1178 7.82199 17.699 6.81095C17.2803 5.7999 16.6664 4.88124 15.8926 4.10742C15.1188 3.3336 14.2001 2.71977 13.1891 2.30098C12.178 1.88219 11.0944 1.66664 10 1.66664V1.66664Z" />
+                </svg>
+              </a>
+            )}
+          </li>
+          <li>
+            {codeSandboxHref && (
+              <a
+                className="transition-colors hover:text-white cursor-pointer flex items-center justify-center p-2 text-gray-400 rounded-full"
+                href={codeSandboxHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open in CodeSandbox"
+                aria-label="Open in CodeSandbox"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M1 4L7.969 0L14.9405 4L15.0005 11.966L7.969 16L1 12V4ZM2.393 5.6535V8.8255L4.622 10.065V12.409L7.2705 13.9405V8.425L2.393 5.6535ZM13.552 5.6535L8.6745 8.4245V13.94L11.3205 12.4085V10.0675L13.5525 8.8255L13.552 5.6535ZM3.0885 4.401L7.9585 7.164L12.8385 4.3775L10.258 2.9115L7.9845 4.2085L5.698 2.896L3.0885 4.401Z" />
+                </svg>
+              </a>
+            )}
           </li>
         </ul>
       </div>
     </div>
-  );
+  )
+}
+
+export function ExternalLink ({ children, href, className }: { children?: React.ReactNode, href: string, className: string }) {
+  return (
+    <a href={href} className={`transition-colors focus:text-white text-gray-300 hover:text-white font-semibold ` + className} target="_blank">
+      {children}
+    </a>
+  )
 }
