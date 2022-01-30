@@ -7,12 +7,12 @@ import { ExampleWrapper } from '../components/ExampleWrapper'
  */
 
 const info = {
-  hide: true,
   title: 'Live piano',
   description: 'Open in multiple windows, or share the link, to play piano live with others.',
   githubHref: 'https://github.com/CTNicholas/liveblocks-live-piano-next-js',
   codeSandboxHref: 'https://codesandbox.io/s/live-piano-with-liveblocks-and-next-js-pgkp5',
-  twitterHref: 'https://twitter.com/ctnicholasdev'
+  twitterHref: 'https://twitter.com/ctnicholasdev',
+  hide: false,
 }
 
 const meta = {
