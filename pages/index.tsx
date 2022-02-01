@@ -16,7 +16,7 @@ const info = {
 }
 
 const meta = {
-  title: 'Live Piano • ctnicholas.dev',
+  title: 'Live Piano — A shared piano that multiple users can play at once • ctnicholas.dev',
   description: 'Open in multiple windows, or share the link, to play piano live with others.',
   image: '/screenshot.png',
   url: 'https://livepiano.ctnicholas.dev',
