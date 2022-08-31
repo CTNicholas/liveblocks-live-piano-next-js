@@ -60,6 +60,7 @@ export function ExampleWrapper ({ meta, info, isRunningOnCodeSandbox, hasSetupLi
         <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#282830" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={meta.image} />
         <meta name="twitter:site" content={meta.twitter} />
         <meta name="twitter:creator" content={meta.twitter} />
         <meta property="og:locale" content="en_GB" />
