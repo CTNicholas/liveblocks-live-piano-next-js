@@ -12,7 +12,7 @@ const info = {
   githubHref: 'https://github.com/CTNicholas/liveblocks-live-piano-next-js',
   codeSandboxHref: 'https://codesandbox.io/s/live-piano-with-liveblocks-and-next-js-pgkp5',
   twitterHref: 'https://twitter.com/ctnicholasdev',
-  hide: false,
+  hide: false
 }
 
 const meta = {

@@ -1,6 +1,6 @@
 import { RoomProvider, useMyPresence, useOthers, useSelf } from '../liveblocks.config'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
-import { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react'
+import { ChangeEvent, Fragment, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ClientSideSuspense } from '@liveblocks/react'
 
@@ -20,9 +20,9 @@ export default function Root () {
   }
 
   return (
-    <RoomProvider id={'live-piano-' + room} initialPresence={{ instrument: "piano", notes: [] }}>
+    <RoomProvider id={'live-piano-' + room} initialPresence={{ instrument: 'piano', notes: [] }}>
       <>
-        <ClientSideSuspense fallback={<div>Loading...</div>}>
+        <ClientSideSuspense fallback={<Loading />}>
           {() => <PianoDemo />}
         </ClientSideSuspense>
       </>
@@ -36,6 +36,13 @@ export default function Root () {
  * Add a note to `notes[]` to play it, and remove it from `notes[]` to stop it
  * Notes are in MIDI format. [52, 55, 57] will play a chord of E3, G3, A3
  */
+type NotePresence = {
+  instrument: string
+  notes: number[]
+  color: string
+  name: string
+  id: number
+}
 
 /*
  * PianoDemo is a Liveblocks wrapper around the LivePiano component
@@ -43,47 +50,23 @@ export default function Root () {
  * We then pass this array, `activeNotes`, to LivePiano
  */
 function PianoDemo () {
-  const self = useSelf()
-  const others = useOthers()
   const [myPresence, updateMyPresence] = useMyPresence()
-  const [activeNotes, setActiveNotes] = useState([])
 
-  // Function that converts `self` into a new NotePresence object
-  const formatSelf = () => {
-    if (!self) {
-      return myPresence
-    }
-    return {
-      ...myPresence,
-      color: self.info.color,
-      name: self.info.name,
-      picture: self.info.picture,
-      id: self.connectionId
-    }
-  }
+  const myNotes = useSelf(me => ({
+    ...me.info,
+    ...me.presence,
+    id: me.connectionId
+  }))
 
-  // Function that converts `others` into a new array of NotePresence objects
-  const formatOthers = () => {
-    return others.toArray()
-      // Skip if presence and presence.notes are not set for this remote user
-      .filter(({ presence }) => presence?.notes)
-      // Return instrument and notes
-      .map(({ presence = {}, info, connectionId }) => {
-        return {
-          instrument: presence.instrument || DEFAULT_INSTRUMENT,
-          notes: presence.notes || [],
-          color: info.color,
-          name: info.name,
-          picture: info.picture,
-          id: connectionId
-        }
-      })
-  }
+  const othersNotes = useOthers(others =>
+    others.map((other => ({
+      ...other.info,
+      ...other.presence,
+      id: other.connectionId
+    }))
+  ))
 
-  // Set initial values
-  useEffect(() => {
-    updateMyPresence({ instrument: DEFAULT_INSTRUMENT, notes: [] })
-  }, [])
+  const activeNotes: NotePresence[] = [myNotes, ...othersNotes]
 
   // When local user plays a note, add note (if not already being played) and update myPresence
   function handlePlayNote (note: number) {
@@ -101,32 +84,9 @@ function PianoDemo () {
     updateMyPresence({ notes: myNotes })
   }
 
-  // When `myPresence` updates (a local user playing/releasing a note), update `activeNotes` with current notes
-  useEffect(() => {
-    if (myPresence.notes) {
-      setActiveNotes([formatSelf(), ...formatOthers()])
-    }
-  }, [myPresence])
-
-  // When `others` updates (someone else playing/releasing a note), update `activeNotes` with current notes
-  useEffect(() => {
-    if (myPresence.notes && others.count) {
-      setActiveNotes([formatSelf(), ...formatOthers()])
-    }
-  }, [others])
-
   // Change local user's instrument
   function handleInstrumentChange (e: ChangeEvent<HTMLSelectElement>) {
     updateMyPresence({ instrument: e.target.value })
-  }
-
-  // Still connecting to Liveblocks
-  if (!self) {
-    return (
-      <div className="bg-gray-100 w-full h-full flex justify-center items-center">
-        <span>Connecting...</span>
-      </div>
-    )
   }
 
   return (
@@ -134,13 +94,13 @@ function PianoDemo () {
       <div className="flex flex-col drop-shadow-xl">
         <div className="bg-white mb-[1px] flex justify-end rounded-t-lg overflow-hidden">
           <div className="p-6 pr-0 sm:pr-6 flex flex-grow">
-            <Avatar url={self.info.picture} color={self.info.color} />
+            <Avatar url={myNotes.picture} color={myNotes.color} />
             <div className="ml-3">
               <div className="font-semibold">You</div>
               <SelectInstrument onInstrumentChange={handleInstrumentChange} />
             </div>
           </div>
-          {formatOthers().reverse().map(({ picture, name, color, instrument, id }) => (
+          {othersNotes.reverse().map(({ picture, name, color, instrument, id }) => (
             <Fragment key={id}>
               <motion.div className="py-6 px-4 xl:px-6 first:pl-6 last:pr-6 hidden lg:flex opacity-0" animate={{ y: [-100, 0], opacity: [0, 1] }}>
                 <Avatar url={picture} color={color} />
@@ -170,10 +130,12 @@ function PianoDemo () {
 // HTML select element, for instrument selection
 function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event: ChangeEvent<HTMLSelectElement>) => void }) {
   const select = useRef<HTMLSelectElement>(null)
+
   function handleChange (event: ChangeEvent<HTMLSelectElement>) {
     select.current?.blur()
     onInstrumentChange(event)
   }
+
   return (
     <div className="relative">
       <span className="absolute top-0.5 -left-1 flex items-center pr-2 pointer-events-none">
@@ -197,7 +159,6 @@ function SelectInstrument ({ onInstrumentChange }: { onInstrumentChange: (event:
   )
 }
 
-// Circular avatar
 function Avatar ({ url = '', color = '' }) {
   return (
     <span className="inline-block relative">
@@ -211,7 +172,14 @@ function Avatar ({ url = '', color = '' }) {
   )
 }
 
-// Capitalize first letter of string
+function Loading () {
+  return (
+    <div className="bg-gray-100 w-full h-full flex justify-center items-center">
+      <span>Connecting...</span>
+    </div>
+  )
+}
+
 function capitalize (str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
