@@ -1,7 +1,10 @@
-import { RoomProvider, useMyPresence, useOthers, useSelf } from '@liveblocks/react'
+import { RoomProvider, useMyPresence, useOthers, useSelf } from '../liveblocks.config'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
 import { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react'
 import { motion } from 'framer-motion'
+import { ClientSideSuspense } from '@liveblocks/react'
+
+const DEFAULT_INSTRUMENT = 'piano'
 
 /*
  * This example shows how to use Liveblocks to build a live piano app.
@@ -17,8 +20,12 @@ export default function Root () {
   }
 
   return (
-    <RoomProvider id={'live-piano-' + room}>
-      <PianoDemo />
+    <RoomProvider id={'live-piano-' + room} initialPresence={{ instrument: "piano", notes: [] }}>
+      <>
+        <ClientSideSuspense fallback={<div>Loading...</div>}>
+          {() => <PianoDemo />}
+        </ClientSideSuspense>
+      </>
     </RoomProvider>
   )
 }
@@ -29,15 +36,6 @@ export default function Root () {
  * Add a note to `notes[]` to play it, and remove it from `notes[]` to stop it
  * Notes are in MIDI format. [52, 55, 57] will play a chord of E3, G3, A3
  */
-export type NotePresence = {
-  instrument: string
-  notes: number[],
-  color?: string
-  name?: string
-  id?: number
-}
-
-const DEFAULT_INSTRUMENT = 'piano'
 
 /*
  * PianoDemo is a Liveblocks wrapper around the LivePiano component
@@ -46,9 +44,9 @@ const DEFAULT_INSTRUMENT = 'piano'
  */
 function PianoDemo () {
   const self = useSelf()
-  const others = useOthers<NotePresence>()
-  const [myPresence, updateMyPresence] = useMyPresence<NotePresence>()
-  const [activeNotes, setActiveNotes] = useState<NotePresence[]>([])
+  const others = useOthers()
+  const [myPresence, updateMyPresence] = useMyPresence()
+  const [activeNotes, setActiveNotes] = useState([])
 
   // Function that converts `self` into a new NotePresence object
   const formatSelf = () => {
