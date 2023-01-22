@@ -15,7 +15,7 @@ const instruments: { [name: string]: string } = {
   marimba: 'marimba',
   trumpet: 'muted_trumpet',
   piccolo: 'piccolo',
-  choir: 'choir_aahs',
+  choir: 'choir_aahs'
 }
 export const instrumentNames = Object.keys(instruments)
 
@@ -65,7 +65,7 @@ export default function LivePiano ({
 
   const [dimensions, setDimensions] = useState<{ width: number; height: number }>({
     width: window ? window.innerWidth : 1000,
-    height: window ? window.innerHeight : 400,
+    height: window ? window.innerHeight : 400
   })
   const [pianoWidth, setPianoWidth] = useState<number>(1000)
 
@@ -78,7 +78,6 @@ export default function LivePiano ({
     const context = window.AudioContext ? new window.AudioContext() : new window.webkitAudioContext()
 
     const startContext = () => {
-      console.log('started')
       context.resume()
     }
     if (context.state === 'suspended') {
@@ -91,7 +90,7 @@ export default function LivePiano ({
     const handler = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight
       })
     }
     window.addEventListener('resize', handler)
@@ -142,7 +141,7 @@ export default function LivePiano ({
               instrumentName={instruments[instrument]}
               audioContext={audioContext}
               hostname={SOUNDFONT_LOCATION}
-              render={({ isLoading, playNote, stopNote }: { isLoading: boolean, playNote: () => {}, stopNote: () => {}}) => {
+              render={({ isLoading, playNote, stopNote }: { isLoading: boolean, playNote: () => {}, stopNote: () => {} }) => {
                 if (index === 0 && isLoading !== loadingInstrument) {
                   setTimeout(() => setLoadingInstrument(!loadingInstrument))
                 }
@@ -166,8 +165,10 @@ export default function LivePiano ({
         <Piano
           noteRange={noteRange}
           width={pianoWidth}
-          playNote={() => {}}
-          stopNote={() => {}}
+          playNote={() => {
+          }}
+          stopNote={() => {
+          }}
           onPlayNoteInput={onPlayNote}
           onStopNoteInput={onStopNote}
           keyboardShortcuts={keyboardShortcuts}
@@ -180,8 +181,10 @@ export default function LivePiano ({
           keyColors={keyColors}
           noteRange={noteRange}
           width={pianoWidth}
-          playNote={() => {}}
-          stopNote={() => {}}
+          playNote={() => {
+          }}
+          stopNote={() => {
+          }}
         />
       </div>
       <motion.div animate={loadingInstrument ? { opacity: 0.7 } : { opacity: 0, pointerEvents: 'none' }} className="absolute inset-0 flex items-center justify-center bg-white z-20 rounded-b-lg">

@@ -10,7 +10,9 @@ export function middleware (request: NextRequest, event: NextFetchEvent) {
   }
 
   // Add random room id to URL and continue
-  return NextResponse.redirect(`/?room=${id()}`)
+  const url = request.nextUrl.clone()
+  url.searchParams.set('room', id())
+  return NextResponse.redirect(url)
 }
 
 function id () {

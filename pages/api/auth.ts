@@ -33,7 +33,7 @@ const COLORS = [
   '#22d3ee',
   '#60a5fa',
   '#c084fc',
-  '#ff7dc0',
+  '#ff7dc0'
 ]
 
 const NAMES = [
