@@ -1,4 +1,4 @@
-import { RoomProvider, useMyPresence, useOthers, useSelf } from '../liveblocks.config'
+import { RoomProvider, useOthers, useSelf, useUpdateMyPresence } from '../liveblocks.config'
 import LivePiano, { instrumentNames } from '../components/LivePiano'
 import { ChangeEvent, Fragment, useRef } from 'react'
 import { motion } from 'framer-motion'
@@ -20,12 +20,13 @@ export default function Root () {
   }
 
   return (
-    <RoomProvider id={'live-piano-' + room} initialPresence={{ instrument: 'piano', notes: [] }}>
-      <>
-        <ClientSideSuspense fallback={<Loading />}>
-          {() => <PianoDemo />}
-        </ClientSideSuspense>
-      </>
+    <RoomProvider
+      id={'live-piano-' + room}
+      initialPresence={{ instrument: DEFAULT_INSTRUMENT, notes: [] }}
+    >
+      <ClientSideSuspense fallback={<Loading />}>
+        {() => <PianoDemo />}
+      </ClientSideSuspense>
     </RoomProvider>
   )
 }
@@ -50,7 +51,7 @@ type NotePresence = {
  * We then pass this array, `activeNotes`, to LivePiano
  */
 function PianoDemo () {
-  const [myPresence, updateMyPresence] = useMyPresence()
+  const updateMyPresence = useUpdateMyPresence()
 
   const myNotes = useSelf(me => ({
     ...me.info,
@@ -70,18 +71,18 @@ function PianoDemo () {
 
   // When local user plays a note, add note (if not already being played) and update myPresence
   function handlePlayNote (note: number) {
-    if (!myPresence.notes.includes(note)) {
-      const myNotes = [...myPresence.notes, note]
-      updateMyPresence({ notes: myNotes })
+    if (!myNotes.notes.includes(note)) {
+      const myNewNotes = [...myNotes.notes, note]
+      updateMyPresence({ notes: myNewNotes })
     }
   }
 
   // When local user releases a note, remove note and update myPresence
   function handleStopNote (note: number) {
-    const myNotes = [...myPresence.notes.filter(n => {
+    const myNewNotes = [...myNotes.notes.filter(n => {
       return n !== note
     })]
-    updateMyPresence({ notes: myNotes })
+    updateMyPresence({ notes: myNewNotes })
   }
 
   // Change local user's instrument
