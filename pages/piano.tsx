@@ -40,6 +40,7 @@ export default function Root () {
 type NotePresence = {
   instrument: string
   notes: number[]
+  picture: string
   color: string
   name: string
   id: number
@@ -53,13 +54,13 @@ type NotePresence = {
 function PianoDemo () {
   const updateMyPresence = useUpdateMyPresence()
 
-  const myNotes = useSelf(me => ({
+  const myNotes: NotePresence = useSelf(me => ({
     ...me.info,
     ...me.presence,
     id: me.connectionId
   }))
 
-  const othersNotes = useOthers(others =>
+  const othersNotes: NotePresence[] = useOthers(others =>
     others.map((other => ({
       ...other.info,
       ...other.presence,
