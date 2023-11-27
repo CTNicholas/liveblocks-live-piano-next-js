@@ -9,9 +9,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@liveblocks/client": "^0.19.7",
-    "@liveblocks/node": "0.19.7",
-    "@liveblocks/react": "^0.19.7",
+    "@liveblocks/client": "^1.8.1",
+    "@liveblocks/node": "^1.8.1",
+    "@liveblocks/react": "^1.8.1",
     "classnames": "^2.2.6",
     "framer-motion": "^5.6.0",
     "just-range": "^2.1.0",
